@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap, shareReplay } from 'rxjs/operators';
+import { catchError, map, tap, shareReplay, timeout } from 'rxjs/operators';
 import { Product, Category, FilterCriteria } from '../models/product.model';
 import { environment } from '../../../environments/environment';
 
@@ -65,35 +64,246 @@ export const SAMPLE_CATEGORIES: Category[] = [
   }
 ];
 
-export const SAMPLE_PRODUCTS: Product[] = [];
-=======
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import {
-  Product,
-  ProductRequest,
-  ProductPageResponse,
-  DashboardStats,
-  ImageUploadResponse
-} from '../models/product.model';
-
-export interface AdminProductFilterParams {
-  category?: string;
-  active?: boolean;
-  search?: string;
-  page?: number;
-  size?: number;
-  sortBy?: string;
-  direction?: 'asc' | 'desc';
-}
->>>>>>> 4612e5dfee97dff303e5e71abbdf1dcb739d2fe1
+export const SAMPLE_PRODUCTS: Product[] = [
+  {
+    id: '1',
+    name: 'Traditional Handcrafted Kolhapuri Chappals',
+    brand: 'StepStyle Heritage',
+    category: 'chappals',
+    price: 1299,
+    originalPrice: 1899,
+    discountPercentage: 31,
+    description: 'Premium genuine leather handcrafted ethnic Kolhapuri chappals featuring braided straps, cushioned footbed, and durable leather sole. Perfect for festive and ethnic occasions.',
+    images: ['https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=600&q=80'],
+    sizes: [6, 7, 8, 9, 10],
+    colors: [{ name: 'Tan', hex: '#D2B48C' }, { name: 'Dark Brown', hex: '#654321' }],
+    rating: 4.7,
+    reviewCount: 38,
+    inStock: true,
+    stockCount: 45,
+    isFeatured: true,
+    isSpecialOffer: true
+  },
+  {
+    id: '2',
+    name: 'Daily Comfort Casual Chappals',
+    brand: 'SoleComfort',
+    category: 'chappals',
+    price: 499,
+    originalPrice: 799,
+    discountPercentage: 37,
+    description: 'Ergonomically contoured rubberized EVA daily wear chappals with anti-skid bottom tread and waterproof strap. Ideal for home and casual outdoor errands.',
+    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80'],
+    sizes: [7, 8, 9, 10, 11],
+    colors: [{ name: 'Black', hex: '#000000' }, { name: 'Navy', hex: '#000080' }],
+    rating: 4.4,
+    reviewCount: 94,
+    inStock: true,
+    stockCount: 100,
+    isBestSeller: true
+  },
+  {
+    id: '3',
+    name: 'Orthopedic Memory Foam House Slippers',
+    brand: 'OrthoStride',
+    category: 'chappals',
+    price: 799,
+    originalPrice: 1199,
+    discountPercentage: 33,
+    description: 'Plush, ultra-soft indoor slippers with high-density memory foam padding, arch support, and anti-slip rubberized traction outsole.',
+    images: ['https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=600&q=80'],
+    sizes: [6, 7, 8, 9, 10],
+    colors: [{ name: 'Grey', hex: '#808080' }, { name: 'Charcoal', hex: '#36454F' }],
+    rating: 4.8,
+    reviewCount: 65,
+    inStock: true,
+    stockCount: 60,
+    isFeatured: true
+  },
+  {
+    id: '5',
+    name: 'Classic Oxford Leather Brogues',
+    brand: 'RoyalStep',
+    category: 'formal',
+    price: 3499,
+    originalPrice: 4999,
+    discountPercentage: 30,
+    description: 'Hand-burnished Italian calfskin formal Oxford shoes with intricate brogue perforations, Goodyear-welted construction, and breathable leather lining.',
+    images: ['https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=600&q=80'],
+    sizes: [7, 8, 9, 10, 11],
+    colors: [{ name: 'Cognac Brown', hex: '#9A463D' }, { name: 'Jet Black', hex: '#000000' }],
+    rating: 4.9,
+    reviewCount: 42,
+    inStock: true,
+    stockCount: 30,
+    isFeatured: true
+  },
+  {
+    id: '6',
+    name: 'Executive Slip-On Leather Loafers',
+    brand: 'Avenue Classic',
+    category: 'formal',
+    price: 2799,
+    originalPrice: 3999,
+    discountPercentage: 30,
+    description: 'Sleek, polished full-grain leather dress loafers with penny strap detail, flexible padded insole, and durable rubber heel for all-day office comfort.',
+    images: ['https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=600&q=80'],
+    sizes: [6, 7, 8, 9, 10],
+    colors: [{ name: 'Black', hex: '#000000' }, { name: 'Mahogany', hex: '#C04000' }],
+    rating: 4.6,
+    reviewCount: 28,
+    inStock: true,
+    stockCount: 40
+  },
+  {
+    id: '7',
+    name: 'AeroGlide Pro Marathon Running Shoes',
+    brand: 'Velocity Sport',
+    category: 'sports',
+    price: 3999,
+    originalPrice: 5999,
+    discountPercentage: 33,
+    description: 'High-performance lightweight mesh running shoes engineered with responsive nitrogen-infused foam midsole, carbon-fiber plate, and high-abrasion rubber outsole.',
+    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'],
+    sizes: [7, 8, 9, 10, 11],
+    colors: [{ name: 'Neon Lime', hex: '#39FF14' }, { name: 'Cobalt Blue', hex: '#0047AB' }],
+    rating: 4.9,
+    reviewCount: 110,
+    inStock: true,
+    stockCount: 50,
+    isBestSeller: true,
+    isNewArrival: true
+  },
+  {
+    id: '8',
+    name: 'CrossFit Flex Training Sneakers',
+    brand: 'Apex Athletics',
+    category: 'sports',
+    price: 2499,
+    originalPrice: 3499,
+    discountPercentage: 28,
+    description: 'Durable, breathable knit athletic trainers with lateral stability cage, flat stable lifting base, and shock-absorbing heel cushioning.',
+    images: ['https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=600&q=80'],
+    sizes: [7, 8, 9, 10],
+    colors: [{ name: 'All Black', hex: '#000000' }, { name: 'Crimson Red', hex: '#990000' }],
+    rating: 4.7,
+    reviewCount: 56,
+    inStock: true,
+    stockCount: 45
+  },
+  {
+    id: '9',
+    name: 'Urban Street Low-Top Canvas Sneakers',
+    brand: 'StreetVibe',
+    category: 'casual',
+    price: 1599,
+    originalPrice: 2299,
+    discountPercentage: 30,
+    description: 'Timeless vulcanized canvas lace-up sneakers featuring reinforced eyelets, padded collar, and durable waffle-grip rubber sole.',
+    images: ['https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=600&q=80'],
+    sizes: [6, 7, 8, 9, 10],
+    colors: [{ name: 'Optic White', hex: '#FFFFFF' }, { name: 'Midnight Black', hex: '#000000' }],
+    rating: 4.5,
+    reviewCount: 78,
+    inStock: true,
+    stockCount: 80,
+    isNewArrival: true
+  },
+  {
+    id: '10',
+    name: 'Suede Desert Chukka Boots',
+    brand: 'TimberTrail',
+    category: 'casual',
+    price: 2899,
+    originalPrice: 4199,
+    discountPercentage: 31,
+    description: 'Soft premium suede leather mid-top chukka boots with minimalist two-eyelet lacing, crepe rubber outsole, and moisture-wicking lining.',
+    images: ['https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80'],
+    sizes: [7, 8, 9, 10, 11],
+    colors: [{ name: 'Sand Khaki', hex: '#C3B091' }, { name: 'Tobacco Brown', hex: '#715D43' }],
+    rating: 4.6,
+    reviewCount: 34,
+    inStock: true,
+    stockCount: 35
+  },
+  {
+    id: '11',
+    name: 'Rugged Outdoor Hiking Trail Boots',
+    brand: 'PeakMaster',
+    category: 'men',
+    price: 4299,
+    originalPrice: 5999,
+    discountPercentage: 28,
+    description: 'Waterproof leather and ripstop nylon trail boots with gusseted tongue, steel shank stability, and deep lug Vibram traction outsoles for demanding terrain.',
+    images: ['https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=600&q=80'],
+    sizes: [8, 9, 10, 11],
+    colors: [{ name: 'Earth Brown', hex: '#5C4033' }, { name: 'Moss Green', hex: '#8A9A5B' }],
+    rating: 4.8,
+    reviewCount: 47,
+    inStock: true,
+    stockCount: 25,
+    isFeatured: true,
+    isBestSeller: true
+  },
+  {
+    id: '12',
+    name: 'Elegance Block Heel Pointed Pumps',
+    brand: 'BellaModa',
+    category: 'women',
+    price: 2199,
+    originalPrice: 3199,
+    discountPercentage: 31,
+    description: 'Chic pointed-toe formal pumps with a comfortable 2.5-inch sturdy block heel, cushioned footbed, and stain-resistant microfiber upper.',
+    images: ['https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80'],
+    sizes: [4, 5, 6, 7, 8],
+    colors: [{ name: 'Nude Blush', hex: '#FFE4E1' }, { name: 'Classic Black', hex: '#000000' }],
+    rating: 4.7,
+    reviewCount: 52,
+    inStock: true,
+    stockCount: 40,
+    isFeatured: true
+  },
+  {
+    id: '13',
+    name: 'Casual Platform Knit Slip-On Flats',
+    brand: 'AuraWalk',
+    category: 'women',
+    price: 1499,
+    originalPrice: 2099,
+    discountPercentage: 28,
+    description: 'Ultra-breathable engineered knit platform walking shoes with stretchy collar, memory foam insole, and featherlight EVA outsole.',
+    images: ['https://images.unsplash.com/photo-1562183241-b937e95585b6?auto=format&fit=crop&w=600&q=80'],
+    sizes: [4, 5, 6, 7, 8],
+    colors: [{ name: 'Dusty Rose', hex: '#DCAE96' }, { name: 'Cloud White', hex: '#F8F8FF' }],
+    rating: 4.6,
+    reviewCount: 68,
+    inStock: true,
+    stockCount: 65,
+    isNewArrival: true
+  },
+  {
+    id: '14',
+    name: 'Kids Active Bounce Velcro Sneakers',
+    brand: 'TinyTreads',
+    category: 'kids',
+    price: 1199,
+    originalPrice: 1699,
+    discountPercentage: 29,
+    description: 'Fun, vibrant kids trainers with dual velcro strap closure, reinforced protective toe cap, breathable mesh upper, and non-marking bounce sole.',
+    images: ['https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=600&q=80'],
+    sizes: [1, 2, 3, 10, 11, 12],
+    colors: [{ name: 'Royal Blue Red', hex: '#4169E1' }, { name: 'Bubblegum Pink', hex: '#FFC1CC' }],
+    rating: 4.8,
+    reviewCount: 39,
+    inStock: true,
+    stockCount: 70,
+    isBestSeller: true
+  }
+];
 
 @Injectable({
   providedIn: 'root'
 })
-<<<<<<< HEAD
 export class ProductService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/products`;
@@ -165,6 +375,7 @@ export class ProductService {
     this.productsCache$ = this.http.get<any>(this.apiUrl, {
       params: { page: '0', size: '100' }
     }).pipe(
+      timeout(4000),
       map(response => {
         const items = response?.content ?? (Array.isArray(response) ? response : []);
         if (items.length === 0) {
@@ -197,6 +408,7 @@ export class ProductService {
     return this.http.get<any>(
       `${this.apiUrl}/${encodeURIComponent(id)}`
     ).pipe(
+      timeout(4000),
       map(dto => this.toProduct(dto)),
       catchError(error => {
         const found = SAMPLE_PRODUCTS.find(p => p.id === id);
@@ -326,78 +538,5 @@ export class ProductService {
         return result;
       })
     );
-=======
-export class AdminProductService {
-  private http = inject(HttpClient);
-  private productsApiUrl = `${environment.apiUrl}/products`;
-  private adminApiUrl = `${environment.apiUrl}/admin`;
-
-  public getDashboardStats(): Observable<DashboardStats> {
-    return this.http.get<DashboardStats>(`${this.adminApiUrl}/stats`);
-  }
-
-  public getAdminProducts(params: AdminProductFilterParams): Observable<ProductPageResponse> {
-    let httpParams = new HttpParams()
-      .set('page', String(params.page ?? 0))
-      .set('size', String(params.size ?? 15))
-      .set('sortBy', params.sortBy ?? 'id')
-      .set('direction', params.direction ?? 'desc');
-
-    if (params.category && params.category !== 'all') {
-      httpParams = httpParams.set('category', params.category);
-    }
-    if (params.active !== undefined && params.active !== null) {
-      httpParams = httpParams.set('active', String(params.active));
-    }
-    if (params.search && params.search.trim()) {
-      httpParams = httpParams.set('search', params.search.trim());
-    }
-
-    return this.http.get<ProductPageResponse>(`${this.adminApiUrl}/products`, { params: httpParams });
-  }
-
-  public getProductById(id: number | string): Observable<Product> {
-    return this.http.get<Product>(`${this.productsApiUrl}/${id}`);
-  }
-
-  public createProduct(request: ProductRequest): Observable<Product> {
-    return this.http.post<Product>(this.productsApiUrl, request);
-  }
-
-  public updateProduct(id: number | string, request: ProductRequest): Observable<Product> {
-    return this.http.put<Product>(`${this.productsApiUrl}/${id}`, request);
-  }
-
-  public deleteProduct(id: number | string): Observable<void> {
-    return this.http.delete<void>(`${this.productsApiUrl}/${id}`);
-  }
-
-  public toggleStatus(id: number | string, active: boolean): Observable<Product> {
-    return this.http.patch<Product>(`${this.productsApiUrl}/${id}/status`, { active });
-  }
-
-  public uploadImage(file: File): Observable<ImageUploadResponse> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<ImageUploadResponse>(`${this.productsApiUrl}/upload-image`, formData);
-  }
-
-  public uploadProductImage(id: number | string, file: File): Observable<Product> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<Product>(`${this.productsApiUrl}/${id}/image`, formData);
-  }
-
-  public formatImageUrl(url?: string | null): string {
-    if (!url || !url.trim()) {
-      return 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80';
-    }
-    const trimmed = url.trim();
-    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:')) {
-      return trimmed;
-    }
-    const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
-    return `http://localhost:8080${cleanPath}`;
->>>>>>> 4612e5dfee97dff303e5e71abbdf1dcb739d2fe1
   }
 }
